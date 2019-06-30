@@ -1,0 +1,4 @@
+include:
+  - project: jonohill/gitlab-templates
+    file: docker.yml
+    ref: 03f5ec98ea995f8e909c3de145b31c4ec0311a0f

@@ -1,0 +1,27 @@
+#!/usr/bin/with-contenv bash
+
+export INCOMING_LIST=/tmp/incoming.txt
+export INCOMING_LIST_TMP=$INCOMING_LIST.tmp
+export FILEBOT_PROCESSED=/tmp/amc.txt
+
+if [ ! -f "/config/.filebot" ] && [ -f "${FILEBOT_LICENSE}" ]; then
+    exec s6-setuidgid plex filebot --license "${FILEBOT_LICENSE}"
+fi
+
+while true; do
+    find "$INCOMING_DIR" -type f > $INCOMING_LIST_TMP
+    touch $INCOMING_LIST
+    if ! cmp --silent $INCOMING_LIST $INCOMING_LIST_TMP; then
+        exec s6-setuidgid plex filebot -script fn:amc \
+            --output "$RCLONE_MOUNT_TARGET" \
+            --action duplicate \
+            -non-strict \
+            --conflict auto \
+            --def unsorted=y \
+            --def movieFormat="{plex}" seriesFormat="{plex}" \
+            --def excludeList=$FILEBOT_PROCESSED
+    fi
+    mv $INCOMING_LIST_TMP $INCOMING_LIST
+
+    sleep 63s
+done

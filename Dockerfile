@@ -17,6 +17,13 @@ RUN apt-get update && apt-get install -y \
     unzip \
     wget
 
+# Filebot
+ENV INCOMING_DIR=/data/incoming
+ENV FILEBOT_LICENSE=/config/filebot.psm
+RUN apt-key adv --fetch-keys "https://raw.githubusercontent.com/filebot/plugins/master/gpg/maintainer.pub" && \
+    echo "deb [arch=all] https://get.filebot.net/deb/ universal-jdk8 main" | tee /etc/apt/sources.list.d/filebot.list && \
+    apt-get update && apt-get install -y filebot
+
 # Rclone
 RUN mkdir -p /opt/rclone
 WORKDIR /opt/rclone

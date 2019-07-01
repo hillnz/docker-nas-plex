@@ -1,0 +1,6 @@
+#!/usr/bin/with-contenv bash
+
+umount ${RCLONE_MOUNT_LEGACY_DIR}
+mkdir -p ${RCLONE_MOUNT_LEGACY_DIR}
+chown -R plex:plex ${RCLONE_MOUNT_LEGACY_DIR}
+exec s6-setuidgid plex /opt/rclone/rclone mount -v --bwlimit 3125 --config="$RCLONE_CONFIG" --read-only ${RCLONE_MOUNT_LEGACY_DIR} ${RCLONE_MOUNT_LEGACY_TARGET}

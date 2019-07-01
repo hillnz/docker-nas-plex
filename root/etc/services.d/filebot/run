@@ -1,4 +1,4 @@
-#  #!/usr/bin/with-contenv bash
+#!/usr/bin/with-contenv bash
 
 export INCOMING_LIST=/tmp/incoming.txt
 export INCOMING_LIST_TMP=$INCOMING_LIST.tmp

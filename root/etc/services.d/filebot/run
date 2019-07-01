@@ -2,6 +2,11 @@
 
 export INCOMING_LIST=/tmp/incoming.txt
 export INCOMING_LIST_TMP=$INCOMING_LIST.tmp
+export FILEBOT_PROCESSED=/tmp/amc.txt
+
+if [ ! -f "/config/.filebot" ] && [ -f "${FILEBOT_LICENSE}" ]; then
+    exec s6-setuidgid plex filebot --license "${FILEBOT_LICENSE}"
+fi
 
 while true; do
     find "$INCOMING_DIR" -type f > $INCOMING_LIST_TMP
@@ -14,7 +19,7 @@ while true; do
             --conflict auto \
             --def unsorted=y \
             --def movieFormat="{plex}" seriesFormat="{plex}" \
-
+            --def excludeList=$FILEBOT_PROCESSED
     fi
     mv $INCOMING_LIST_TMP $INCOMING_LIST
 

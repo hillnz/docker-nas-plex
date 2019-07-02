@@ -19,7 +19,8 @@ while true; do
             --conflict auto \
             --def unsorted=y \
             --def movieFormat="{plex}" seriesFormat="{plex}" \
-            --def excludeList=$FILEBOT_PROCESSED
+            --def excludeList=$FILEBOT_PROCESSED \
+            "$INCOMING_DIR"
     fi
     mv $INCOMING_LIST_TMP $INCOMING_LIST
 

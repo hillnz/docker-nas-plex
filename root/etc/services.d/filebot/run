@@ -10,6 +10,8 @@ if [ ! -f "/config/.filebot" ] && [ -f "${FILEBOT_LICENSE}" ]; then
 fi
 
 while true; do
+    sleep 63s
+
     find "$INCOMING_DIR" -type f > $INCOMING_LIST_TMP
     touch $INCOMING_LIST
     if ! cmp --silent $INCOMING_LIST $INCOMING_LIST_TMP; then
@@ -26,11 +28,9 @@ while true; do
             "$INCOMING_DIR"
 
         # Filebot's copying strategy makes rclone sad, hence we copy things separately
-        cp -r "${TMP_OUTPUT}/*" "${RCLONE_MOUNT_TARGET}/"
-        rm -rf "${TMP_OUTPUT}/*"
+        s6-setuidgid plex cp -r "${TMP_OUTPUT}/*" "${RCLONE_MOUNT_TARGET}/"
+        s6-setuidgid plex rm -rf "${TMP_OUTPUT}/*"
     fi
 
     mv $INCOMING_LIST_TMP $INCOMING_LIST
-
-    sleep 63s
 done

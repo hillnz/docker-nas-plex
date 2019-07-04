@@ -27,7 +27,7 @@ while true; do
             "$INCOMING_DIR"
 
         # Filebot's copying strategy makes rclone sad, hence we copy things separately
-        s6-setuidgid plex cp -r "${FILEBOT_TMP_OUTPUT}/*" "${RCLONE_MOUNT_TARGET}/"
+        s6-setuidgid plex rsync -r "${FILEBOT_TMP_OUTPUT}/" "${RCLONE_MOUNT_TARGET}"
         s6-setuidgid plex rm -rf "${FILEBOT_TMP_OUTPUT}/*"
     fi
 

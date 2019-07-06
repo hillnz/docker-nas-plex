@@ -26,7 +26,7 @@ while true; do
             --def excludeList=$FILEBOT_PROCESSED \
             "$INCOMING_DIR"
 
-        s6-setuidgid plex /opt/rclone/rclone --config="$RCLONE_CONFIG" move \
+        s6-setuidgid plex /opt/rclone/rclone --config="$RCLONE_CONFIG" --bwlimit="$RCLONE_UPLOAD_BWLIMIT" move \
             "${FILEBOT_TMP_OUTPUT}" "${RCLONE_MOUNT_DIR}" \
             --delete-empty-src-dirs
     fi

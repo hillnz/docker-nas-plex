@@ -10,7 +10,6 @@ RUN apt-get update && apt-get install -y \
     file \ 
     fuse \
     git \
-    gnupg-curl \
     python \
     ruby \
     sqlite \

@@ -1,6 +1,7 @@
 #!/usr/bin/with-contenv bash
+# shellcheck shell=bash
 
-umount ${RCLONE_MOUNT_TARGET}
-mkdir -p ${RCLONE_MOUNT_TARGET}
-chown -R plex:plex ${RCLONE_MOUNT_TARGET}
-exec s6-setuidgid plex /opt/rclone/rclone mount -v --bwlimit 3125 --config="$RCLONE_CONFIG" --read-only ${RCLONE_MOUNT_DIR_CACHED} ${RCLONE_MOUNT_TARGET}
+umount "${RCLONE_MOUNT_TARGET}"
+mkdir -p "${RCLONE_MOUNT_TARGET}"
+chown -R plex:plex "${RCLONE_MOUNT_TARGET}"
+exec s6-setuidgid plex rclone mount -v --bwlimit 3125 --config="$RCLONE_CONFIG" --read-only "${RCLONE_MOUNT_DIR_CACHED}" "${RCLONE_MOUNT_TARGET}"

@@ -41,6 +41,8 @@ while True:
             new_root.append(node)
         with open(XMLTV_OUTPUT, 'w') as f:
             f.write(ET.tostring(new_root, encoding='unicode'))
+    except Exception as err:
+        print(err)
     finally:
         rmtree(tmp_dir)
 

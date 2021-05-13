@@ -1,5 +1,5 @@
 # renovate: datasource=docker depName=jonoh/plex-tellytv-test versioning=regex:^1\.(?<major>\d+)\.(?<minor>\d+)\.(?<patch>\d+).+
-ARG PLEX_VERSION=1.22.3.4392-d7c624def
+ARG PLEX_VERSION=1.22.3.4523-d0ce30438
 
 FROM --platform=$BUILDPLATFORM curlimages/curl AS downloader
 

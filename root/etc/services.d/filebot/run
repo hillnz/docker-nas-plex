@@ -26,13 +26,6 @@ while true; do
             --def movieFormat="{plex}" seriesFormat="{plex}" \
             --def excludeList=$FILEBOT_PROCESSED \
             "$INCOMING_DIR"
-
-        s6-setuidgid plex rclone \
-            --config="$RCLONE_CONFIG" \
-            --bwlimit="$RCLONE_UPLOAD_BWLIMIT" \
-            --dscp LE \
-            move "${FILEBOT_TMP_OUTPUT}" "${RCLONE_MOUNT_DIR}" \
-            --delete-empty-src-dirs
     fi
 
     mv $INCOMING_LIST_TMP $INCOMING_LIST

@@ -22,7 +22,7 @@ ARG YOUTUBEDL_VERSION=2021.06.06
 RUN curl -L -o youtube-dl https://github.com/ytdl-org/youtube-dl/releases/download/${YOUTUBEDL_VERSION}/youtube-dl && \
     chmod a+rx youtube-dl
 
-FROM jonoh/plex-tellytv-test:${PLEX_VERSION}
+FROM jonoh/plex:${PLEX_VERSION}
 
 ARG TARGETPLATFORM
 

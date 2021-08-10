@@ -7,10 +7,6 @@ ARG TARGETPLATFORM
 
 WORKDIR /home/curl_user
 
-# renovate: datasource=repology depName=homebrew_casks/FileBot
-ARG FILEBOT_VERSION=4.9.3
-RUN curl -L -o filebot.deb https://get.filebot.net/filebot/FileBot_${FILEBOT_VERSION}/FileBot_${FILEBOT_VERSION}_universal.deb
-
 # renovate: datasource=github-releases depName=rclone/rclone
 ARG RCLONE_VERSION=v1.56.0
 RUN RCLONE_PLATFORM=$(echo $TARGETPLATFORM | sed 's|/|-|g' ) && \
@@ -50,7 +46,6 @@ ENV RCLONE_MOUNT_DIR= RCLONE_MOUNT_TARGET=
 ENV RCLONE_CONFIG=/config/rclone.conf
 ENV RCLONE_CACHE_PATH=/caches
 ENV INCOMING_DIR=/data/incoming
-ENV FILEBOT_LICENSE=/config/filebot.psm
 ENV RCLONE_UPLOAD_BWLIMIT=0
 
 COPY root/ /

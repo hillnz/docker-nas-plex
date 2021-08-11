@@ -4,6 +4,7 @@
 umount "${RCLONE_MOUNT_TARGET}"
 mkdir -p "${RCLONE_MOUNT_TARGET}"
 chown -R plex:plex "${RCLONE_MOUNT_TARGET}"
+chown -R plex:plex "${RCLONE_MOUNT_CACHE_DIR}"
 exec s6-setuidgid plex \
     rclone mount -v \
         --config="$RCLONE_CONFIG" \

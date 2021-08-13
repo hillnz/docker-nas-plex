@@ -12,8 +12,8 @@ exec s6-setuidgid plex \
         --vfs-read-chunk-size 100M \
         --cache-dir "${RCLONE_MOUNT_CACHE_DIR}" \
         --vfs-cache-mode full \
-        --vfs-cache-max-age 720h0m0s \
+        --vfs-cache-max-age 4h0m0s \
         --vfs-cache-max-size "${RCLONE_CACHE_MAX_SIZE}" \
-        --vfs-cache-poll-interval 24h0m0s \
+        --vfs-cache-poll-interval 1h0m0s \
         "${RCLONE_MOUNT_DIR}" \
         "${RCLONE_MOUNT_TARGET}"

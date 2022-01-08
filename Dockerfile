@@ -1,5 +1,5 @@
 # renovate: datasource=docker depName=jonoh/plex versioning=regex:^1\.(?<major>\d+)\.(?<minor>\d+)\.(?<patch>\d+).+
-ARG PLEX_VERSION=1.24.1.4931-1a38e63c6
+ARG PLEX_VERSION=1.25.2.5319-c43dc0277
 
 FROM --platform=$BUILDPLATFORM curlimages/curl AS downloader
 
@@ -8,12 +8,12 @@ ARG TARGETPLATFORM
 WORKDIR /home/curl_user
 
 # renovate: datasource=github-releases depName=rclone/rclone
-ARG RCLONE_VERSION=v1.56.0
+ARG RCLONE_VERSION=v1.57.0
 RUN RCLONE_PLATFORM=$(echo $TARGETPLATFORM | sed 's|/|-|g' ) && \
     curl -L -o rclone.deb https://github.com/rclone/rclone/releases/download/${RCLONE_VERSION}/rclone-${RCLONE_VERSION}-${RCLONE_PLATFORM}.deb
 
 # renovate: datasource=github-releases depName=ytdl-org/youtube-dl versioning=regex:^(?<major>\d+)\.0?(?<minor>\d+)\.0?(?<patch>\d+)$
-ARG YOUTUBEDL_VERSION=2021.06.06
+ARG YOUTUBEDL_VERSION=2021.12.17
 # Platform independent - zipped python file
 RUN curl -L -o youtube-dl https://github.com/ytdl-org/youtube-dl/releases/download/${YOUTUBEDL_VERSION}/youtube-dl && \
     chmod a+rx youtube-dl

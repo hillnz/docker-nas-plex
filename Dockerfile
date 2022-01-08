@@ -42,6 +42,11 @@ RUN apt-get update && apt-get install -y \
     && \
     apt install -y /tmp/*.deb && rm /tmp/*.deb
 
+RUN curl -fsSL https://deb.nodesource.com/setup_16.x | bash - && \
+    apt-get install -y nodejs
+
+RUN npm install -g antennas
+
 RUN groupadd fuse && usermod -a -G fuse plex
 ENV RCLONE_MOUNT_DIR= RCLONE_MOUNT_TARGET=
 ENV RCLONE_CONFIG=/config/rclone.conf

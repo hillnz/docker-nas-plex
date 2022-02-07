@@ -8,7 +8,6 @@ chown -R plex:plex "${RCLONE_MOUNT_CACHE_DIR}"
 exec s6-setuidgid plex \
     rclone mount -v \
         --config="$RCLONE_CONFIG" \
-        --read-only \
         --vfs-read-chunk-size 100M \
         --cache-dir "${RCLONE_MOUNT_CACHE_DIR}" \
         --vfs-cache-mode full \

@@ -55,4 +55,6 @@ ENV INCOMING_DIR=/data/incoming
 ENV RCLONE_UPLOAD_BWLIMIT=0
 ENV RCLONE_CACHE_MAX_SIZE=25G
 
+RUN rm /etc/cont-init.d/50-plex-update
+
 COPY root/ /

@@ -56,3 +56,5 @@ ENV RCLONE_UPLOAD_BWLIMIT=0
 ENV RCLONE_CACHE_MAX_SIZE=25G
 
 COPY root/ /
+
+HEALTHCHECK --interval=5s --timeout=5s --start-period=30s --retries=2 CMD /healthcheck.sh || /dvr_healthcheck.py || exit 1

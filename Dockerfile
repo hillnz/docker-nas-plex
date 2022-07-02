@@ -1,5 +1,5 @@
 # renovate: datasource=docker depName=jonoh/plex versioning=regex:^1\.(?<major>\d+)\.(?<minor>\d+)\.(?<patch>\d+).+
-ARG PLEX_VERSION=1.25.6.5577-c8bd13540
+ARG PLEX_VERSION=1.27.1.5916-6b0e31a64
 
 FROM --platform=$BUILDPLATFORM curlimages/curl AS downloader
 
@@ -8,7 +8,7 @@ ARG TARGETPLATFORM
 WORKDIR /home/curl_user
 
 # renovate: datasource=github-releases depName=rclone/rclone
-ARG RCLONE_VERSION=v1.57.0
+ARG RCLONE_VERSION=v1.58.1
 RUN RCLONE_PLATFORM=$(echo $TARGETPLATFORM | sed 's|/|-|g' ) && \
     curl -L -o rclone.deb https://github.com/rclone/rclone/releases/download/${RCLONE_VERSION}/rclone-${RCLONE_VERSION}-${RCLONE_PLATFORM}.deb
 

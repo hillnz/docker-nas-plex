@@ -14,5 +14,6 @@ exec s6-setuidgid plex \
         --vfs-cache-max-age 4h0m0s \
         --vfs-cache-max-size "${RCLONE_CACHE_MAX_SIZE}" \
         --vfs-cache-poll-interval 1h0m0s \
+        --vfs-write-back "${RCLONE_WRITE_BACK}" \
         "${RCLONE_MOUNT_DIR}" \
         "${RCLONE_MOUNT_TARGET}"

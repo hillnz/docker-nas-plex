@@ -1,0 +1,19 @@
+#!/usr/bin/with-contenv bash
+# shellcheck shell=bash
+
+umount "${RCLONE_MOUNT_TARGET_2}"
+mkdir -p "${RCLONE_MOUNT_TARGET_2}"
+chown -R plex:plex "${RCLONE_MOUNT_TARGET_2}"
+chown -R plex:plex "${RCLONE_MOUNT_CACHE_DIR_2}"
+exec s6-setuidgid plex \
+    rclone mount -v \
+        --config="$RCLONE_CONFIG_2" \
+        --vfs-read-chunk-size 100M \
+        --cache-dir "${RCLONE_MOUNT_CACHE_DIR_2}" \
+        --vfs-cache-mode full \
+        --vfs-cache-max-age 4h0m0s \
+        --vfs-cache-max-size "${RCLONE_CACHE_MAX_SIZE}" \
+        --vfs-cache-poll-interval 1h0m0s \
+        --vfs-write-back "${RCLONE_WRITE_BACK}" \
+        "${RCLONE_MOUNT_DIR_2}" \
+        "${RCLONE_MOUNT_TARGET_2}"

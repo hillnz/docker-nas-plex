@@ -8,7 +8,7 @@ ARG TARGETPLATFORM
 WORKDIR /home/curl_user
 
 # renovate: datasource=github-releases depName=rclone/rclone
-ARG RCLONE_VERSION=v1.61.0
+ARG RCLONE_VERSION=v1.61.1
 RUN RCLONE_PLATFORM=$(echo $TARGETPLATFORM | sed 's|/|-|g' ) && \
     curl -L -o rclone.deb https://github.com/rclone/rclone/releases/download/${RCLONE_VERSION}/rclone-${RCLONE_VERSION}-${RCLONE_PLATFORM}.deb
 

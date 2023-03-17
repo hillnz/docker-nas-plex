@@ -32,7 +32,7 @@ RUN apt-get update && apt-get install -y \
     curl \
     ffmpeg \
     file \ 
-    fuse \
+    fuse3 \
     git \
     python \
     ruby \

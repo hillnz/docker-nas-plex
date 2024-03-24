@@ -74,3 +74,4 @@ for op in reversed(sorted(scheduled, key=lambda op: op.start)):
             exit(1)
 
     # TODO check for failed
+    # status == 'error'

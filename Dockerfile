@@ -1,5 +1,5 @@
 # renovate: datasource=docker depName=jonoh/plex versioning=regex:^1\.(?<major>\d+)\.(?<minor>\d+)\.(?<patch>\d+).+
-ARG PLEX_VERSION=1.40.4.8679-424562606
+ARG PLEX_VERSION=1.40.5.8854-f36c552fd
 
 FROM --platform=$BUILDPLATFORM curlimages/curl AS downloader
 

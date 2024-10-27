@@ -58,6 +58,4 @@ ENV PROXY_PLEX_URL=http://localhost:32400
 ENV PROXY_RCLONE_URL=http://localhost:${RCLONE_HTTP_PORT}
 ENV PROXY_PLEX_LIBRARY_PATH="${RCLONE_MOUNT_TARGET}"
 
-RUN rm /etc/cont-init.d/50-plex-update
-
 COPY root/ /

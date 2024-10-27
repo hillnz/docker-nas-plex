@@ -25,7 +25,7 @@ ARG TARGETPLATFORM
 COPY --from=downloader /home/curl_user/*.deb /tmp/
 COPY --from=downloader /home/curl_user/youtube-dl /usr/local/bin/youtube-dl
 
-COPY --from=ghcr.io/jonohill/plex-proxy:4 /usr/local/bin/plex-proxy /usr/local/bin/plex-proxy
+COPY --from=ghcr.io/jonohill/plex-proxy:5 /usr/local/bin/plex-proxy /usr/local/bin/plex-proxy
 
 RUN apt-get update && apt-get install -y \
     apt-transport-https \

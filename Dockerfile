@@ -23,7 +23,9 @@ FROM jonoh/plex:${PLEX_VERSION}
 ARG TARGETPLATFORM
 
 COPY --from=downloader /home/curl_user/*.deb /tmp/
-COPY --from=downloader /home/curl_user/youtube-dl /usr/local/bin/youtube-dl    
+COPY --from=downloader /home/curl_user/youtube-dl /usr/local/bin/youtube-dl
+
+COPY --from=ghcr.io/jonohill/plex-proxy:4 /usr/local/bin/plex-proxy /usr/local/bin/plex-proxy
 
 RUN apt-get update && apt-get install -y \
     apt-transport-https \
@@ -42,11 +44,6 @@ RUN apt-get update && apt-get install -y \
     && \
     apt install -y /tmp/*.deb && rm /tmp/*.deb
 
-RUN curl -fsSL https://deb.nodesource.com/setup_16.x | bash - && \
-    apt-get install -y nodejs
-
-RUN npm install -g antennas
-
 RUN groupadd fuse && usermod -a -G fuse plex
 ENV RCLONE_MOUNT_DIR= RCLONE_MOUNT_TARGET=
 ENV RCLONE_CONFIG=/config/rclone.conf
@@ -56,8 +53,13 @@ ENV RCLONE_UPLOAD_BWLIMIT=0
 ENV RCLONE_CACHE_MAX_SIZE=25G
 ENV RCLONE_WRITE_BACK=5s
 
+ENV RCLONE_CONFIG_HTTP=/config/rclone-http.conf
+ENV RCLONE_HTTP_PORT=32500
+
+ENV PROXY_PLEX_URL=http://localhost:32400
+ENV PROXY_RCLONE_URL=http://localhost:${RCLONE_HTTP_PORT}
+ENV PROXY_PLEX_LIBRARY_PATH="${RCLONE_MOUNT_TARGET}"
+
 RUN rm /etc/cont-init.d/50-plex-update
 
 COPY root/ /
-
-HEALTHCHECK --interval=5s --timeout=5s --start-period=30s --retries=2 CMD /healthcheck.sh || /dvr_healthcheck.py || exit 1

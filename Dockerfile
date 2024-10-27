@@ -34,7 +34,7 @@ RUN apt-get update && apt-get install -y \
     fuse3 \
     git \
     libssl-dev \
-    python \
+    python3 \
     ruby \
     sqlite \
     unzip \

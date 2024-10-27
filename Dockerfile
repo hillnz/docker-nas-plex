@@ -1,6 +1,3 @@
-# renovate: datasource=docker depName=jonoh/plex versioning=regex:^1\.(?<major>\d+)\.(?<minor>\d+)\.(?<patch>\d+).+
-ARG PLEX_VERSION=1.41.1.9057-af5eaea7a
-
 FROM --platform=$BUILDPLATFORM curlimages/curl AS downloader
 
 ARG TARGETPLATFORM
@@ -18,7 +15,7 @@ ARG YOUTUBEDL_VERSION=2021.12.17
 RUN curl -L -o youtube-dl https://github.com/ytdl-org/youtube-dl/releases/download/${YOUTUBEDL_VERSION}/youtube-dl && \
     chmod a+rx youtube-dl
 
-FROM jonoh/plex:${PLEX_VERSION}
+FROM linuxserver/plex:1.41.1
 
 ARG TARGETPLATFORM
 
@@ -45,7 +42,7 @@ RUN apt-get update && apt-get install -y \
     && \
     apt install -y /tmp/*.deb && rm /tmp/*.deb
 
-RUN groupadd fuse && usermod -a -G fuse plex
+RUN groupadd fuse && usermod -a -G fuse abc
 ENV RCLONE_MOUNT_DIR= RCLONE_MOUNT_TARGET=
 ENV RCLONE_CONFIG=/config/rclone.conf
 ENV RCLONE_CACHE_PATH=/caches

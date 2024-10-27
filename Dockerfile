@@ -36,7 +36,7 @@ RUN apt-get update && apt-get install -y \
     libssl-dev \
     python3 \
     ruby \
-    sqlite \
+    sqlite3 \
     unzip \
     wget \
     && \

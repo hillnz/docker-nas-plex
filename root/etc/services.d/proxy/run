@@ -4,5 +4,6 @@
 PLEX_URL="$PROXY_PLEX_URL" \
 RCLONE_URL="$PROXY_RCLONE_URL" \
 PLEX_LIBRARY_PATH="$PROXY_PLEX_LIBRARY_PATH" \
+PORT="$PROXY_PORT" \
 exec s6-setuidgid abc \
     plex-proxy

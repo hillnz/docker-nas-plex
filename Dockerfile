@@ -22,8 +22,6 @@ ARG TARGETPLATFORM
 COPY --from=downloader /home/curl_user/*.deb /tmp/
 COPY --from=downloader /home/curl_user/youtube-dl /usr/local/bin/youtube-dl
 
-COPY --from=ghcr.io/jonohill/plex-proxy:7 /usr/local/bin/plex-proxy /usr/local/bin/plex-proxy
-
 RUN apt-get update && apt-get install -y \
     apt-transport-https \
     build-essential \ 
@@ -53,9 +51,5 @@ ENV RCLONE_WRITE_BACK=5s
 
 ENV RCLONE_CONFIG_HTTP=/config/rclone-http.conf
 ENV RCLONE_HTTP_PORT=32500
-
-ENV PROXY_PLEX_URL=http://localhost:32400
-ENV PROXY_RCLONE_URL=http://localhost:${RCLONE_HTTP_PORT}
-ENV PROXY_PLEX_LIBRARY_PATH="${RCLONE_MOUNT_TARGET}"
 
 COPY root/ /

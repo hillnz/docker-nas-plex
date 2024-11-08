@@ -1,8 +1,15 @@
 #!/usr/bin/with-contenv bash
 # shellcheck shell=bash
 
-umount "${RCLONE_MOUNT_TARGET}"
-mkdir -p "${RCLONE_MOUNT_TARGET}"
+set -e
+
+while ! curl --silent --fail https://id.jottacloud.com:443 >/dev/null; do
+    echo "Waiting for caddy..."
+    sleep 1
+done
+
+umount "${RCLONE_MOUNT_TARGET}" || true
+mkdir -p "${RCLONE_MOUNT_TARGET}" || true
 chown -R abc:abc "${RCLONE_MOUNT_TARGET}"
 chown -R abc:abc "${RCLONE_MOUNT_CACHE_DIR}"
 exec s6-setuidgid abc \

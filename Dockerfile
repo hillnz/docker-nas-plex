@@ -22,7 +22,7 @@ ARG TARGETPLATFORM
 COPY --from=downloader /home/curl_user/*.deb /tmp/
 COPY --from=downloader /home/curl_user/youtube-dl /usr/local/bin/youtube-dl
 
-COPY --from=caddy:2.8.4 /usr/bin/caddy /usr/bin/caddy
+COPY --from=caddy:2.9.1 /usr/bin/caddy /usr/bin/caddy
 
 RUN apt-get update && apt-get install -y \
     apt-transport-https \

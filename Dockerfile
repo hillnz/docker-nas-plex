@@ -15,7 +15,7 @@ ARG YOUTUBEDL_VERSION=2021.12.17
 RUN curl -L -o youtube-dl https://github.com/ytdl-org/youtube-dl/releases/download/${YOUTUBEDL_VERSION}/youtube-dl && \
     chmod a+rx youtube-dl
 
-FROM linuxserver/plex:1.41.5
+FROM linuxserver/plex:1.41.6
 
 ARG TARGETPLATFORM
 

@@ -1,0 +1,53 @@
+#!/usr/bin/with-contenv bash
+# shellcheck shell=bash
+
+set -e
+
+SOCKET="${TS_SOCKET:-/var/run/tailscale/tailscaled.sock}"
+
+# Wait for tailscaled to be ready
+echo "Waiting for tailscaled to be ready..."
+while [[ ! -S "${SOCKET}" ]]; do
+    sleep 1
+done
+
+# Build tailscale up command arguments
+UP_ARGS=(
+    "--socket=${SOCKET}"
+    "up"
+)
+
+# Add authkey if provided
+if [[ -n "${TS_AUTHKEY}" ]]; then
+    UP_ARGS+=("--authkey=${TS_AUTHKEY}")
+fi
+
+# Add hostname if provided
+if [[ -n "${TS_HOSTNAME}" ]]; then
+    UP_ARGS+=("--hostname=${TS_HOSTNAME}")
+fi
+
+# Accept DNS configuration from tailnet
+if [[ "${TS_ACCEPT_DNS}" == "true" ]]; then
+    UP_ARGS+=("--accept-dns=true")
+else
+    UP_ARGS+=("--accept-dns=false")
+fi
+
+# Add any extra args for tailscale up
+if [[ -n "${TS_EXTRA_ARGS}" ]]; then
+    # shellcheck disable=SC2206
+    UP_ARGS+=(${TS_EXTRA_ARGS})
+fi
+
+echo "Running tailscale up as user abc..."
+s6-setuidgid abc tailscale "${UP_ARGS[@]}"
+
+# Check current status
+echo "Tailscale status:"
+s6-setuidgid abc tailscale --socket="${SOCKET}" status
+
+# This is a oneshot service - exit cleanly after bringing tailscale up
+# s6 will not restart it unless we exit non-zero
+echo "Tailscale is up. Service complete."
+exec sleep infinity

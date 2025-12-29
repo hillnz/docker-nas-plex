@@ -1,0 +1,38 @@
+#!/usr/bin/with-contenv bash
+# shellcheck shell=bash
+
+set -e
+
+STATE_DIR="${TS_STATE_DIR:-/var/lib/tailscale}"
+SOCKET_PATH="${TS_SOCKET:-/var/run/tailscale/tailscaled.sock}"
+SOCKET_DIR="$(dirname "${SOCKET_PATH}")"
+
+# Create state directory and socket directory with correct ownership
+mkdir -p "${STATE_DIR}" "${SOCKET_DIR}"
+chown -R abc:abc "${STATE_DIR}" "${SOCKET_DIR}"
+
+# Build tailscaled command arguments
+TAILSCALED_ARGS=(
+    "--state=${STATE_DIR}/tailscaled.state"
+    "--socket=${SOCKET_PATH}"
+    "--tun=userspace-networking"
+)
+
+# Add SOCKS5 proxy if configured
+if [[ -n "${TS_SOCKS5_SERVER}" ]]; then
+    TAILSCALED_ARGS+=("--socks5-server=${TS_SOCKS5_SERVER}")
+fi
+
+# Add HTTP proxy if configured
+if [[ -n "${TS_OUTBOUND_HTTP_PROXY_LISTEN}" ]]; then
+    TAILSCALED_ARGS+=("--outbound-http-proxy-listen=${TS_OUTBOUND_HTTP_PROXY_LISTEN}")
+fi
+
+# Add any extra tailscaled args
+if [[ -n "${TS_TAILSCALED_EXTRA_ARGS}" ]]; then
+    # shellcheck disable=SC2206
+    TAILSCALED_ARGS+=(${TS_TAILSCALED_EXTRA_ARGS})
+fi
+
+echo "Starting tailscaled in userspace networking mode as user abc..."
+exec s6-setuidgid abc tailscaled "${TAILSCALED_ARGS[@]}"

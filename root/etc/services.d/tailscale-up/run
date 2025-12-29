@@ -11,15 +11,25 @@ while [[ ! -S "${SOCKET}" ]]; do
     sleep 1
 done
 
+# Check current state to determine if we need to authenticate
+CURRENT_STATE=$(s6-setuidgid abc tailscale --socket="${SOCKET}" status --json 2>/dev/null | jq -r '.BackendState // "Unknown"')
+echo "Current Tailscale state: ${CURRENT_STATE}"
+
 # Build tailscale up command arguments
 UP_ARGS=(
     "--socket=${SOCKET}"
     "up"
 )
 
-# Add authkey if provided
+# Only add authkey if provided AND we're not already logged in
+# This prevents issues with single-use (non-reusable) authkeys on container restart
 if [[ -n "${TS_AUTHKEY}" ]]; then
-    UP_ARGS+=("--authkey=${TS_AUTHKEY}")
+    if [[ "${CURRENT_STATE}" == "Running" ]]; then
+        echo "Already authenticated, skipping authkey"
+    else
+        echo "Not yet authenticated, using authkey"
+        UP_ARGS+=("--authkey=${TS_AUTHKEY}")
+    fi
 fi
 
 # Add hostname if provided

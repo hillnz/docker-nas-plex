@@ -96,4 +96,12 @@ ENV TS_SOCKS5_SERVER=
 # Example: "0.0.0.0:8080" to expose HTTP proxy for tailnet access
 ENV TS_OUTBOUND_HTTP_PROXY_LISTEN=
 
+# Taildrive configuration
+# TS_DRIVE_SHARES: Comma-separated list of shares in "name:path" format
+# Example: "media:/data/media,config:/config" to share multiple directories
+# Note: Requires "drive:share" node attribute in your Tailscale ACLs
+# Access requires "drive:access" node attribute on accessing nodes
+# Shares are accessible via WebDAV at http://100.100.100.100:8080/<tailnet>/<hostname>/<sharename>
+ENV TS_DRIVE_SHARES=
+
 COPY root/ /

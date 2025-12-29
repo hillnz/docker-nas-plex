@@ -47,6 +47,23 @@ s6-setuidgid abc tailscale "${UP_ARGS[@]}"
 echo "Tailscale status:"
 s6-setuidgid abc tailscale --socket="${SOCKET}" status
 
+# Configure Taildrive shares if specified
+# Format: "name1:path1,name2:path2"
+if [[ -n "${TS_DRIVE_SHARES}" ]]; then
+    echo "Configuring Taildrive shares..."
+    IFS=',' read -ra SHARES <<< "${TS_DRIVE_SHARES}"
+    for share in "${SHARES[@]}"; do
+        name="${share%%:*}"
+        path="${share#*:}"
+        if [[ -n "${name}" && -n "${path}" ]]; then
+            echo "  Adding share: ${name} -> ${path}"
+            s6-setuidgid abc tailscale --socket="${SOCKET}" drive share "${name}" "${path}" || echo "  Warning: Failed to add share ${name} (is drive:share enabled in ACLs?)"
+        fi
+    done
+    echo "Taildrive shares configured. List current shares:"
+    s6-setuidgid abc tailscale --socket="${SOCKET}" drive list || true
+fi
+
 # This is a oneshot service - exit cleanly after bringing tailscale up
 # s6 will not restart it unless we exit non-zero
 echo "Tailscale is up. Service complete."

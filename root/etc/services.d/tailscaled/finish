@@ -4,4 +4,4 @@
 # Cleanup tailscaled on shutdown
 foreground { tailscaled --cleanup }
 foreground { redirfd -w 1 /run/s6-linux-init-container-results/exitcode echo 0 }
-/run/s6/basedir/bin/halt
+# /run/s6/basedir/bin/halt

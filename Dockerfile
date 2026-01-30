@@ -15,9 +15,9 @@ ARG YOUTUBEDL_VERSION=2021.12.17
 RUN curl -L -o youtube-dl https://github.com/ytdl-org/youtube-dl/releases/download/${YOUTUBEDL_VERSION}/youtube-dl && \
     chmod a+rx youtube-dl
 
-FROM ghcr.io/tailscale/tailscale:v1.92.4 AS tailscale
+FROM ghcr.io/tailscale/tailscale:v1.92.5 AS tailscale
 
-FROM linuxserver/plex:1.42.2
+FROM linuxserver/plex:1.43.0
 
 ARG TARGETPLATFORM
 

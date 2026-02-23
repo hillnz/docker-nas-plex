@@ -27,7 +27,7 @@ COPY --from=downloader /home/curl_user/youtube-dl /usr/local/bin/youtube-dl
 COPY --from=tailscale /usr/local/bin/tailscale /usr/bin/tailscale
 COPY --from=tailscale /usr/local/bin/tailscaled /usr/bin/tailscaled
 
-COPY --from=caddy:2.10.2 /usr/bin/caddy /usr/bin/caddy
+COPY --from=caddy:2.11.1 /usr/bin/caddy /usr/bin/caddy
 
 RUN apt-get update && apt-get install -y \
     apt-transport-https \

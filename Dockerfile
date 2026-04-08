@@ -17,7 +17,7 @@ RUN curl -L -o youtube-dl https://github.com/ytdl-org/youtube-dl/releases/downlo
 
 FROM ghcr.io/tailscale/tailscale:v1.96.5 AS tailscale
 
-FROM linuxserver/plex:1.43.0
+FROM linuxserver/plex:1.43.1
 
 ARG TARGETPLATFORM
 

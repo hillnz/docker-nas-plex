@@ -17,7 +17,7 @@ RUN curl -L -o youtube-dl https://github.com/ytdl-org/youtube-dl/releases/downlo
 
 FROM ghcr.io/tailscale/tailscale:v1.98.4 AS tailscale
 
-FROM ubuntu:24.04 AS filestash_build
+FROM ubuntu:26.04 AS filestash_build
 
 COPY --from=golang:1.26 /usr/local/go /usr/local/go
 ENV PATH=/usr/local/go/bin:$PATH

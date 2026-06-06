@@ -1,0 +1,28 @@
+#!/usr/bin/with-contenv bash
+# shellcheck shell=bash
+
+set -e
+
+# filestash resolves its state relative to ./data/state in its working dir. We
+# point that at a persistent location under /config so the admin config, sqlite
+# db and settings survive container recreation. On first run, seed the
+# persistent dir from the image's bundled state.
+STATE_DIR="${FILESTASH_STATE_DIR:-/config/filestash}"
+APP_STATE=/app/data/state
+
+mkdir -p "${STATE_DIR}"
+if [[ ! -e "${STATE_DIR}/config/config.json" && -d "${APP_STATE}" && ! -L "${APP_STATE}" ]]; then
+    cp -a "${APP_STATE}/." "${STATE_DIR}/"
+fi
+
+# Replace the in-image state dir with a symlink to the persistent location.
+if [[ ! -L "${APP_STATE}" ]]; then
+    rm -rf "${APP_STATE}"
+    ln -s "${STATE_DIR}" "${APP_STATE}"
+fi
+
+chown -R abc:abc "${STATE_DIR}"
+chown -h abc:abc "${APP_STATE}"
+
+cd /app
+exec s6-setuidgid abc ./filestash

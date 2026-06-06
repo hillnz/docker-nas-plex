@@ -17,6 +17,36 @@ RUN curl -L -o youtube-dl https://github.com/ytdl-org/youtube-dl/releases/downlo
 
 FROM ghcr.io/tailscale/tailscale:v1.98.4 AS tailscale
 
+FROM ubuntu:24.04 AS filestash_build
+
+COPY --from=golang:1.26 /usr/local/go /usr/local/go
+ENV PATH=/usr/local/go/bin:$PATH
+
+# renovate: datasource=git-refs depName=https://github.com/mickael-kerjean/filestash
+ARG FILESTASH_VERSION=f726b385704cefa79f0a0149d7afeeddae8e07c5
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    ca-certificates \
+    curl \
+    g++ \
+    gcc \
+    git \
+    make \
+    pkg-config \
+    libjpeg-dev libtiff-dev libpng-dev libwebp-dev libraw-dev libheif-dev libgif-dev libvips-dev liblcms2-dev \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /src
+# Without video transcoder, which wants newer ffmpeg
+RUN git clone https://github.com/mickael-kerjean/filestash . && \
+    git checkout "${FILESTASH_VERSION}" && \
+    sed -i '/plg_video_transcoder/d' server/plugin/index.go && \
+    make init && \
+    make build && \
+    mkdir -p dist/data/state/config
+
+COPY filestash/config.json /src/dist/data/state/config/config.json
+
 FROM linuxserver/plex:1.43.2
 
 ARG TARGETPLATFORM
@@ -29,15 +59,18 @@ COPY --from=tailscale /usr/local/bin/tailscaled /usr/bin/tailscaled
 
 COPY --from=caddy:2.11.4 /usr/bin/caddy /usr/bin/caddy
 
+COPY --from=filestash_build /src/dist/ /app/
+
 RUN apt-get update && apt-get install -y \
     apt-transport-https \
-    build-essential \ 
+    build-essential \
     dirmngr \
     curl \
     ffmpeg \
-    file \ 
+    file \
     fuse3 \
     git \
+    libbrotli1 \
     libnss3-tools \
     libssl-dev \
     python3 \
@@ -46,7 +79,8 @@ RUN apt-get update && apt-get install -y \
     unzip \
     wget \
     && \
-    apt install -y /tmp/*.deb && rm /tmp/*.deb
+    apt install -y /tmp/*.deb && rm /tmp/*.deb && \
+    chmod 755 /app/filestash
 
 RUN groupadd fuse && usermod -a -G fuse abc
 ENV RCLONE_MOUNT_DIR= RCLONE_MOUNT_TARGET=
@@ -103,5 +137,11 @@ ENV TS_OUTBOUND_HTTP_PROXY_LISTEN=
 # Access requires "drive:access" node attribute on accessing nodes
 # Shares are accessible via WebDAV at http://100.100.100.100:8080/<tailnet>/<hostname>/<sharename>
 ENV TS_DRIVE_SHARES=
+
+# filestash
+ENV FILESTASH_STATE_DIR=/config/filestash
+ENV CONFIG_ENCRYPT=false
+ENV LOCAL_BACKEND_SECRET=filestash
+EXPOSE 8334
 
 COPY root/ /

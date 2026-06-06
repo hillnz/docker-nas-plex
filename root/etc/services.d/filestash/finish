@@ -1,0 +1,7 @@
+#!/command/execlineb -S0
+# shellcheck shell=bash
+
+# Don't halt the container if filestash exits - let s6 restart it so a filestash
+# crash never takes down Plex.
+foreground { redirfd -w 1 /run/s6-linux-init-container-results/exitcode echo 0 }
+# /run/s6/basedir/bin/halt

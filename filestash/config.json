@@ -1,0 +1,19 @@
+{
+    "connections": [
+        {
+            "type": "local",
+            "label": "data",
+            "path": "/data"
+        }
+    ],
+    "middleware": {
+        "identity_provider": {
+            "type": "passthrough",
+            "params": "{\"type\":\"passthrough\",\"strategy\":\"direct\"}"
+        },
+        "attribute_mapping": {
+            "related_backend": "data",
+            "params": "{\"data\":{\"type\":\"local\",\"path\":\"/data\",\"password\":\"filestash\"}}"
+        }
+    }
+}

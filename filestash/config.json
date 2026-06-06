@@ -1,4 +1,8 @@
 {
+    "auth": {
+        "_comment": "Random bcrypt hash of a discarded password: locks the admin console (/admin) and skips the first-run setup wizard. No one can log into admin; reconfigure by editing this file. Set ADMIN_PASSWORD (a bcrypt hash) to enable admin login.",
+        "admin": "$2a$10$XijQyXWqXO0D9HDg/j1S3egG4svHYn2cvthVIOEq95fvij2k2ySeq"
+    },
     "connections": [
         {
             "type": "local",

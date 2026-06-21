@@ -16,6 +16,8 @@ exec s6-setuidgid abc \
     rclone mount -v \
         --config="$RCLONE_CONFIG" \
         --vfs-read-chunk-size 100M \
+        --vfs-read-chunk-size-limit 1G \
+        --vfs-read-ahead 512M \
         --cache-dir "${RCLONE_MOUNT_CACHE_DIR}" \
         --vfs-cache-mode full \
         --vfs-cache-max-age 4h0m0s \

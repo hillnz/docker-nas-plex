@@ -47,7 +47,7 @@ RUN git clone https://github.com/mickael-kerjean/filestash . && \
 
 COPY filestash/config.json /src/dist/data/state/config/config.json
 
-FROM linuxserver/plex:1.43.2
+FROM linuxserver/plex:1.43.3
 
 ARG TARGETPLATFORM
 

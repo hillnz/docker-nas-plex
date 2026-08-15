@@ -1,0 +1,12 @@
+#!/usr/bin/with-contenv bash
+# shellcheck shell=bash
+
+set -e
+
+[[ -n "${RCLONE_MOUNT_TARGET}" ]] || exit 0
+
+mkdir -p "${RCLONE_MOUNT_TARGET}"
+if ! mountpoint -q "${RCLONE_MOUNT_TARGET}"; then
+    chown root:root "${RCLONE_MOUNT_TARGET}"
+    chmod 0755 "${RCLONE_MOUNT_TARGET}"
+fi

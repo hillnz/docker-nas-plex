@@ -9,8 +9,14 @@ while ! curl --silent --fail https://id.jottacloud.com:443 >/dev/null; do
 done
 
 umount "${RCLONE_MOUNT_TARGET}" || true
-mkdir -p "${RCLONE_MOUNT_TARGET}" || true
-chown -R abc:abc "${RCLONE_MOUNT_TARGET}"
+
+if mountpoint -q "${RCLONE_MOUNT_TARGET}"; then
+    echo "${RCLONE_MOUNT_TARGET} is still mounted after umount, refusing to clear it"
+    exit 1
+fi
+rm -rf "${RCLONE_MOUNT_TARGET}"
+mkdir -p "${RCLONE_MOUNT_TARGET}"
+chown abc:abc "${RCLONE_MOUNT_TARGET}"
 chown -R abc:abc "${RCLONE_MOUNT_CACHE_DIR}"
 exec s6-setuidgid abc \
     rclone mount -v \

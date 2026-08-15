@@ -5,7 +5,7 @@ ARG TARGETPLATFORM
 WORKDIR /home/curl_user
 
 # renovate: datasource=github-releases depName=rclone/rclone
-ARG RCLONE_VERSION=v1.74.3
+ARG RCLONE_VERSION=v1.75.0
 RUN RCLONE_PLATFORM=$(echo $TARGETPLATFORM | sed 's|/|-|g' ) && \
     curl -L -o rclone.deb https://github.com/rclone/rclone/releases/download/${RCLONE_VERSION}/rclone-${RCLONE_VERSION}-${RCLONE_PLATFORM}.deb
 
@@ -15,7 +15,7 @@ ARG YOUTUBEDL_VERSION=2021.12.17
 RUN curl -L -o youtube-dl https://github.com/ytdl-org/youtube-dl/releases/download/${YOUTUBEDL_VERSION}/youtube-dl && \
     chmod a+rx youtube-dl
 
-FROM ghcr.io/tailscale/tailscale:v1.98.4 AS tailscale
+FROM ghcr.io/tailscale/tailscale:v1.102.2 AS tailscale
 
 FROM ubuntu:24.04 AS filestash_build
 
@@ -47,7 +47,7 @@ RUN git clone https://github.com/mickael-kerjean/filestash . && \
 
 COPY filestash/config.json /src/dist/data/state/config/config.json
 
-FROM linuxserver/plex:1.43.2
+FROM linuxserver/plex:1.43.3
 
 ARG TARGETPLATFORM
 

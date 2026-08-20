@@ -19,7 +19,7 @@ FROM ghcr.io/tailscale/tailscale:v1.102.2 AS tailscale
 
 FROM ubuntu:24.04 AS filestash_build
 
-COPY --from=golang:1.26 /usr/local/go /usr/local/go
+COPY --from=golang:1.27 /usr/local/go /usr/local/go
 ENV PATH=/usr/local/go/bin:$PATH
 
 # renovate: datasource=git-refs depName=https://github.com/mickael-kerjean/filestash

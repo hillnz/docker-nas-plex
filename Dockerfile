@@ -57,7 +57,7 @@ COPY --from=downloader /home/curl_user/youtube-dl /usr/local/bin/youtube-dl
 COPY --from=tailscale /usr/local/bin/tailscale /usr/bin/tailscale
 COPY --from=tailscale /usr/local/bin/tailscaled /usr/bin/tailscaled
 
-COPY --from=caddy:2.11.6 /usr/bin/caddy /usr/bin/caddy
+COPY --from=caddy:2.11.7 /usr/bin/caddy /usr/bin/caddy
 
 COPY --from=filestash_build /src/dist/ /app/
 
